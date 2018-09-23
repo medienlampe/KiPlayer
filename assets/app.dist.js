@@ -64,6 +64,7 @@
       };
 
     self.config = KiPlayerConfig || sampleConfig;
+    self.index = 0;
 
     if (
       !self.config.descriptionElement ||
@@ -73,8 +74,10 @@
       return;
     }
 
+    self.config.movieElement.addEventListener('ended', self.startVideo);
+
     if (self.config.movies.length) {
-      self.startVideo(0, self.config.alwaysShowTitle);
+      self.startVideo();
     }
 
     return self;
@@ -85,7 +88,7 @@
    * @param  {boolean} Show the title of the movie the whole time.
    * @return {KiPlayer}
    */
-  KiPlayer.prototype.startVideo = function(index, alwaysShowTitle) {
+  KiPlayer.prototype.startVideo = function() {
     var self = this,
       movieElement = self.config.movieElement,
       movieWrapperElement = self.config.movieWrapperElement,
@@ -97,7 +100,7 @@
 
     if (self.config.movies.length <= index) {
       if (self.config.infiniteRepeat) {
-        index = 0;
+        self.index = 0;
       } else {
         return;
       }
@@ -116,17 +119,16 @@
 
     setTimeout(function() {
       movieWrapperElement.classList.remove('hidden');
-      if (alwaysShowTitle) {
+      if (self.config.alwaysShowTitle) {
         titleElement.innerHTML = movie.title;
         titleElement.classList.remove('hidden');
       }
       movieElement.setAttribute('src', movie.source);
       movieElement.play();
-
-      movieElement.addEventListener('ended', function() {
-        self.startVideo(++index, alwaysShowTitle);
-      });
     }, self.config.descriptionTime);
+
+    // goto next movie at index...
+    ++self.index;
 
     return self;
   };
