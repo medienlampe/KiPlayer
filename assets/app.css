@@ -1,0 +1,28 @@
+body {
+  font-size: 32px;
+  padding: 0rem 1rem;
+  font-family: sans-serif;
+  background: #000;
+  color: #ccc;
+}
+
+video {
+  height: 100vh;
+  margin-left: 50%;
+  transform: translateX(-50%);
+}
+
+h1#movietitle {
+  font-size: 2rem;
+  position: absolute;
+  bottom: 1rem;
+  right: 1rem;
+  background: rgba(0, 0, 0, 0.8);
+  z-index: 1;
+  padding: 0.5rem 1rem;
+  border-radius: 1rem;
+}
+
+.hidden {
+  display: none;
+}
