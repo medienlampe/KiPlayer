@@ -12,7 +12,8 @@
     movieDescriptionElement: document.getElementById('moviedescription'),
     movieLengthElement: document.getElementById('movielength'),
     movieElement: document.getElementById('movieobject'),
-    descriptionTime: 5000,
+    descriptionTime: 10000,
+    descriptionPaddingTime: 2000,
     alwaysShowTitle: true,
     infiniteRepeat: true,
     movies: [
@@ -57,7 +58,8 @@
         movieDescriptionElement: false,
         movieLengthElement: false,
         movieElement: false,
-        descriptionTime: 3000,
+        descriptionTime: 5000,
+        descriptionPaddingTime: 2000,
         alwaysShowTitle: false,
         infiniteRepeat: false,
         movies: []
@@ -74,7 +76,9 @@
       return;
     }
 
-    self.config.movieElement.addEventListener('ended', self.startVideo);
+    self.config.movieElement.addEventListener('ended', function() {
+      self.startVideo();
+    });
 
     if (self.config.movies.length) {
       self.startVideo();
@@ -98,7 +102,7 @@
       titleElement = self.config.titleElement,
       movie;
 
-    if (self.config.movies.length <= index) {
+    if (self.config.movies.length <= self.index) {
       if (self.config.infiniteRepeat) {
         self.index = 0;
       } else {
@@ -106,25 +110,30 @@
       }
     }
 
-    movie = self.config.movies[index];
+    movie = self.config.movies[self.index];
 
     titleElement.classList.add('hidden');
     movieWrapperElement.classList.add('hidden');
 
     if (movie.description != '') {
+      descriptionElement.classList.remove('hidden');
       descriptionElement.getElementsByTagName('h2')[0].innerHTML = movie.title;
       movieDescriptionElement.innerHTML = movie.description;
       movieLengthElement.innerHTML = movie.length;
     }
 
     setTimeout(function() {
-      movieWrapperElement.classList.remove('hidden');
-      if (self.config.alwaysShowTitle) {
-        titleElement.innerHTML = movie.title;
-        titleElement.classList.remove('hidden');
-      }
+      descriptionElement.classList.add('hidden');
+
       movieElement.setAttribute('src', movie.source);
-      movieElement.play();
+      setTimeout(function() {
+        movieWrapperElement.classList.remove('hidden');
+        if (self.config.alwaysShowTitle) {
+          titleElement.innerHTML = movie.title;
+          titleElement.classList.remove('hidden');
+        }
+        movieElement.play();
+      }, self.config.descriptionPaddingTime);
     }, self.config.descriptionTime);
 
     // goto next movie at index...
