@@ -31,7 +31,7 @@
           'This is a sample movie downloaded from https://www.sample-videos.com.'
       },
       {
-        title: 'Movie 1',
+        title: 'Movie 3',
         length: '1:37',
         source: './media/TestMovie.mp4',
         description:
@@ -95,7 +95,7 @@
       titleElement = self.config.titleElement,
       movie;
 
-    if (self.config.movies.length >= index) {
+    if (self.config.movies.length <= index) {
       if (self.config.infiniteRepeat) {
         index = 0;
       } else {
@@ -124,7 +124,7 @@
       movieElement.play();
 
       movieElement.addEventListener('ended', function() {
-        self.startVideo(++index);
+        self.startVideo(++index, alwaysShowTitle);
       });
     }, self.config.descriptionTime);
 
