@@ -2,7 +2,7 @@
   'use strict';
 
   /**
-   * KiPlayer sample config
+   * KiPlayer configuration
    * @type {Object}
    */
   var KiPlayerConfig = {
@@ -39,6 +39,8 @@
       }
     ]
   };
+
+  // Do not modify beyond this point.
 
   /**
    * KiPlayer
